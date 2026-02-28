@@ -34,31 +34,35 @@
         });
     }
 
-    // --- 2. MENU MOBILE ---
     function initMenuMobile() {
-        const menuToggle = document.querySelector(".menu-toggle");
-        const menuMobile = document.querySelector(".menu-mobile");
+    // Agora selecionamos especificamente o ícone dentro do toggle
+    const btnHamburguer = document.querySelector(".menu-toggle i.fa-bars");
+    const menuMobile = document.querySelector(".menu-mobile");
+    const menuToggle = document.querySelector(".menu-toggle");
 
-        if (!menuToggle || !menuMobile) return;
+    if (!btnHamburguer || !menuMobile) return;
 
-        menuToggle.addEventListener("click", () => {
-            menuMobile.classList.toggle("active");
+    // O evento de "click" agora é apenas no ÍCONE
+    btnHamburguer.addEventListener("click", (e) => {
+        e.stopPropagation(); // Evita que o clique "vaze" para outros elementos
+        menuMobile.classList.toggle("active");
+    });
+
+    // Fecha ao clicar fora (mantemos essa lógica, ela é boa!)
+    document.addEventListener("click", (e) => {
+        // Se o clique NÃO for no menu E NÃO for no ícone hambúrguer, fecha o menu
+        if (!menuMobile.contains(e.target) && !btnHamburguer.contains(e.target)) {
+            menuMobile.classList.remove("active");
+        }
+    });
+
+    // Fecha ao clicar em um link interno do menu
+    document.querySelectorAll(".menu-mobile ul li a").forEach(link => {
+        link.addEventListener("click", () => {
+            menuMobile.classList.remove("active");
         });
-
-        // Fecha ao clicar fora
-        document.addEventListener("click", (e) => {
-            if (!menuToggle.contains(e.target) && !menuMobile.contains(e.target)) {
-                menuMobile.classList.remove("active");
-            }
-        });
-
-        // Fecha ao clicar em link
-        document.querySelectorAll(".menu-mobile ul li a").forEach(link => {
-            link.addEventListener("click", () => {
-                menuMobile.classList.remove("active");
-            });
-        });
-    }
+    });
+}
 
     // --- 3. BLOG (CONTINUAR LENDO) ---
     function initBlogReadMore() {
